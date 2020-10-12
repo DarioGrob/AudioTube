@@ -110,50 +110,6 @@ class PlaylistComponent extends PolymerElement {
                     background-color: #979DAC;
                 }
                 
-                #grid-container {
-                    display: grid;
-                    grid-template-columns: auto auto auto auto;
-                    grid-column-gap: 30px;
-                    grid-row-gap: 30px;
-                    margin-top: 50px;
-                    margin-left: auto;
-                    margin-right: auto;
-                    width: 1170px;
-                }
-
-                .hr-text {
-                    line-height: 1em;
-                    position: relative;
-                    outline: 0;
-                    border: 0;
-                    color: black;
-                    text-align: center;
-                    height: 1.5em;
-                    opacity: .5;
-                    margin-top: 40px;
-                }
-                
-                .hr-text::before {
-                    content: '';
-                    background: linear-gradient(to right, transparent, #001233, transparent);
-                    position: absolute;
-                    left: 0;
-                    top: 50%;
-                    width: 100%;
-                    height: 1px;
-                }
-                
-                .hr-text::after {
-                    content: attr(data-content);
-                    position: relative;
-                    display: inline-block;
-                    color: black;
-                    padding: 0 .5em;
-                    line-height: 1.5em;
-                    color: #001233;
-                    background-color: white;
-                }
-                
             </style>
             <div id="content">
                 <div id="playlistTitle">
@@ -162,18 +118,16 @@ class PlaylistComponent extends PolymerElement {
                 <div id="song">
                     <h3>[[playlist.currentSong.name]]</h3>
                     <div id="player-container">
-                        <audio id ="player">
-                            <source scr="[[playlist.currentSong.url]]" type="audio/mp3"></audio>
-                        </audio>
+                        <audio on-timeupdate="initProgressBar" on-ended="endSong" preload="metadata" id="player" src="[[playlist.currentSong.url]]"></audio>
                     </div>
                     <div id="audioControl">
                         <vaadin-horizontal-layout id="controlButtons">
-                            <iron-icon id="back" icon="vaadin:angle-left"></iron-icon>
-                            <iron-icon id="playAndStop" on-click="changePlayAndStopButton" icon="[[playlist.controllButton]]"></iron-icon>
-                            <iron-icon id="next" icon="vaadin:angle-right"></iron-icon>
+                            <iron-icon id="back" on-click="lastSong" icon="vaadin:angle-left"></iron-icon>
+                            <iron-icon id="playAndStop" on-click="changePlayAndStopButton" icon="vaadin:play-circle-o"></iron-icon>
+                            <iron-icon id="next" on-click="nextSong" icon="vaadin:angle-right"></iron-icon>
                         </vaadin-horizontal-layout>
-                        <progress id="progressBar" value="0" max="1"></progress>
-                        <small id="startTime"></small>
+                        <progress id="progressBar" on-click="setCurrentTimeOfSong" value="0" max="1"></progress>
+                        <small id="startTime">00:00</small>
                         <small id="endTime"></small>
                     </div>
                 </div>
@@ -184,20 +138,162 @@ class PlaylistComponent extends PolymerElement {
         `;
     }
 
-    changePlayAndStopButton(e) {
-        console.log("hallo");
-        let test = document.getElementById("player");
-        console.log(test);
+    constructor() {
+        super();
+    }
 
-        let test1 = this.shadowRoot.getElementById("player");
-        console.log(test1);
-        test1.play();
+    ready() {
+        super.ready();
+
+        let songList = this.get("playlist.songs");
+        this.set("playlist.currentSong", songList[0]);
+        this.set("currentSongIndex", 0);
+        this.set("songListLenght", songList.length);
+
+        this.setEndTimeForSong();
+    }
+
+    setEndTimeForSong() {
+        let player = this.shadowRoot.getElementById("player");
+        let endTime = this.shadowRoot.getElementById("endTime");
+        player.onloadedmetadata = function() {
+            let duration = player.duration;
+            let minute = parseInt(duration / 60) % 60;
+            let seconds_long = duration % 60;
+            let seconds = seconds_long.toFixed();
+            let time = (minute < 10 ? "0" + minute : minute) + ":" + (seconds < 10 ? "0" + seconds : seconds);
+            endTime.innerHTML = time;
+        }
+    }
+
+    initProgressBar() {
+        console.log("test");
+        let playButton = this.shadowRoot.getElementById("playAndStop");
+        if (playButton.getAttribute("icon") == "vaadin:pause") {
+            let player = this.shadowRoot.getElementById("player");
+            console.log(player);
+            console.log(player.currentTime);
+            let current_time = player.currentTime;
+
+            let currentTime = this.calculateCurrentValue(current_time);
+            this.shadowRoot.getElementById("startTime").innerHTML = currentTime;
+
+            if (!isNaN(player.duration)) {
+                let progressbar = this.shadowRoot.getElementById("progressBar");
+                progressbar.value = (player.currentTime / player.duration);
+            }
+        }
+    }
+
+    setCurrentTimeOfSong(event) {
+        let progressbar = this.shadowRoot.getElementById("progressBar");
+        let player = this.shadowRoot.getElementById("player");
+
+        let percent = event.offsetX / progressbar.offsetWidth;
+        player.currentTime = percent * player.duration;
+        progressbar.value = percent;
+    }
+
+    calculateCurrentValue(currentTime) {
+        let current_minute = parseInt(currentTime / 60) % 60;
+        let current_seconds_long = currentTime % 60;
+        let current_seconds = current_seconds_long.toFixed();
+        let current_time = (current_minute < 10 ? "0" + current_minute : current_minute) + ":" + (current_seconds < 10 ? "0" + current_seconds : current_seconds);
+
+        return current_time;
+    }
+
+    changePlayAndStopButton(e) {
+        let button = this.shadowRoot.getElementById("playAndStop");
+        let player = this.shadowRoot.getElementById("player");
+        if (button.getAttribute("icon") == "vaadin:play-circle-o") {
+            button.setAttribute("icon", "vaadin:pause");
+            player.play();
+        } else if (button.getAttribute("icon") == "vaadin:pause") {
+            button.setAttribute("icon", "vaadin:play-circle-o");
+            player.pause();
+        }
+    }
+
+    lastSong(e) {
+        let songList = this.get("playlist.songs");
+        let currentSongIndex = this.get("currentSongIndex");
+        let songListLenght = this.get("songListLenght");
+
+        let player = this.shadowRoot.getElementById("player");
+        let playButton = this.shadowRoot.getElementById("playAndStop");
+
+        if (currentSongIndex == 0) {
+            this.set("playlist.currentSong", songList[songListLenght - 1]);
+            this.set("currentSongIndex", songListLenght - 1);
+            this.setEndTimeForSong();
+            player.currentTime = 0;
+        } else {
+            this.set("playlist.currentSong", songList[currentSongIndex - 1]);
+            this.set("currentSongIndex", currentSongIndex - 1);
+            this.setEndTimeForSong();
+            player.currentTime = 0;
+        }
+
+        if (playButton.getAttribute("icon") == "vaadin:pause") {
+            player.play();
+        }
+    }
+
+    nextSong(e) {
+        let songList = this.get("playlist.songs");
+        let currentSongIndex = this.get("currentSongIndex");
+        let songListLenght = this.get("songListLenght");
+
+        let player = this.shadowRoot.getElementById("player");
+        let playButton = this.shadowRoot.getElementById("playAndStop");
+
+        if (currentSongIndex == songListLenght - 1) {
+            this.set("playlist.currentSong", songList[0]);
+            this.set("currentSongIndex", 0);
+            this.setEndTimeForSong();
+            player.currentTime = 0;
+        } else {
+            this.set("playlist.currentSong", songList[currentSongIndex + 1]);
+            this.set("currentSongIndex", currentSongIndex + 1);
+            this.setEndTimeForSong();
+            player.currentTime = 0;
+        }
+
+        if (playButton.getAttribute("icon") == "vaadin:pause") {
+            player.play();
+        }
+    }
+
+    endSong() {
+        let songList = this.get("playlist.songs");
+        let currentSongIndex = this.get("currentSongIndex");
+        let songListLenght = this.get("songListLenght");
+
+        let player = this.shadowRoot.getElementById("player");
+
+        if (currentSongIndex == songListLenght - 1) {
+            this.set("playlist.currentSong", songList[0]);
+            this.set("currentSongIndex", 0);
+            this.setEndTimeForSong();
+            player.currentTime = 0;
+            player.play();
+        } else {
+            this.set("playlist.currentSong", songList[currentSongIndex + 1]);
+            this.set("currentSongIndex", currentSongIndex + 1);
+            this.setEndTimeForSong();
+            player.currentTime = 0;
+            player.play();
+        }
     }
 
     static get properties() {
         return {
             playlist: {
+                type: Object,
+                value() {
 
+                }
             }
         }
     }

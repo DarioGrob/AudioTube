@@ -41,20 +41,20 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
 
     private void initData() {
         List<Song> songs = new ArrayList<>();
-        songs.add(new Song("song1", "C:\\Users\\Dario Grob\\Desktop\\test.mp3"));
-        songs.add(new Song("song2", "C:\\Users\\Dario Grob\\Desktop\\test.mp3"));
-        songs.add(new Song("song3", "C:\\Users\\Dario Grob\\Desktop\\test.mp3"));
-        songs.add(new Song("song4", "C:\\Users\\Dario Grob\\Desktop\\test.mp3"));
-        songs.add(new Song("song5", "C:\\Users\\Dario Grob\\Desktop\\test.mp3"));
+        songs.add(new Song("song1", "songs/testAudio.mp3"));
+        songs.add(new Song("song2", "songs/testAudio.mp3"));
+        songs.add(new Song("song3", "songs/testAudio.mp3"));
+        songs.add(new Song("song4", "songs/testAudio.mp3"));
+        songs.add(new Song("song5", "songs/testAudio.mp3"));
 
-        Playlist p1 = new Playlist("name1", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p2 = new Playlist("name2", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p3 = new Playlist("name3", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p4 = new Playlist("name4", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p5 = new Playlist("name5", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p6 = new Playlist("name5", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p7 = new Playlist("name5", songs, "vaadin:play-circle-o", songs.get(0));
-        Playlist p8 = new Playlist("name5", songs, "vaadin:play-circle-o", songs.get(0));
+        Playlist p1 = new Playlist("name1", songs);
+        Playlist p2 = new Playlist("name2", songs);
+        Playlist p3 = new Playlist("name3", songs);
+        Playlist p4 = new Playlist("name4", songs);
+        Playlist p5 = new Playlist("name5", songs);
+        Playlist p6 = new Playlist("name5", songs);
+        Playlist p7 = new Playlist("name5", songs);
+        Playlist p8 = new Playlist("name5", songs);
 
         playlists.add(p1);
         playlists.add(p2);

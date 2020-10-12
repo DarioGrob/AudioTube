@@ -7,15 +7,12 @@ import java.util.List;
 public class Playlist {
 
 	private String name;
-	private String controllButton;
 	private List<Song> songs;
 	private Song currentSong;
 
-	public Playlist(String name, List<Song> songs, String controllButton, Song currentSong) {
+	public Playlist(String name, List<Song> songs) {
 		this.name = name;
-		this.controllButton = controllButton;
 		this.songs = songs;
-		this.currentSong = currentSong;
 	}
 
 	public String getName() {
@@ -32,15 +29,6 @@ public class Playlist {
 
 	public void setSongs(List<Song> songs) {
 		this.songs = songs;
-	}
-
-	public String getControllButton() {
-		return controllButton;
-	}
-
-	@AllowClientUpdates
-	public void setControllButton(String controllButton) {
-		this.controllButton = controllButton;
 	}
 
 	public Song getCurrentSong() {
