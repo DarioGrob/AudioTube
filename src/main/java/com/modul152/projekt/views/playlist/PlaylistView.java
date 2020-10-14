@@ -5,6 +5,7 @@ import com.modul152.projekt.model.Playlist;
 import com.modul152.projekt.model.Song;
 import com.modul152.projekt.views.main.MainView;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
@@ -30,6 +31,9 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
     @Id("content")
     private Div content;
 
+    @Id("createPlaylist")
+    private Button button;
+
     private PlaylistPresenter presenter;
 
     @Autowired
@@ -41,10 +45,10 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
 
     private void initData() {
         List<Song> songs = new ArrayList<>();
-        songs.add(new Song("song1", "songs/testAudio.mp3"));
+        songs.add(new Song("song1", "songs/real.mp3"));
         songs.add(new Song("song2", "songs/testAudio.mp3"));
-        songs.add(new Song("song3", "songs/testAudio.mp3"));
-        songs.add(new Song("song4", "songs/testAudio.mp3"));
+        songs.add(new Song("song3", "songs/test.mp3"));
+        songs.add(new Song("song4", "songs/real.mp3"));
         songs.add(new Song("song5", "songs/testAudio.mp3"));
 
         Playlist p1 = new Playlist("name1", songs);
