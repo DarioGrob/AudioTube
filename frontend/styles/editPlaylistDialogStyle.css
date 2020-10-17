@@ -1,0 +1,21 @@
+.playlistName {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-decoration: underline;
+}
+
+.deleteButton {
+    margin-top: 30px;
+    width: 100%;
+    background-color: #e5383b;
+    color: #ffffff;
+}
+
+.testilo {
+    background-color: #f5f3f4;
+    border: 4px solid black;
+}
+
+div#content {
+    padding: 0;
+}

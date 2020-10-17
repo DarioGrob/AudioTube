@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.router.HasDynamicTitle;
@@ -28,8 +29,8 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
 
     List<Playlist> playlists = new ArrayList<>();
 
-    @Id("content")
-    private Div content;
+    @Id("grid-container")
+    private HorizontalLayout content;
 
     @Id("createPlaylist")
     private Button button;
@@ -40,7 +41,6 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
     public PlaylistView(PlaylistPresenter presenter) {
         this.presenter = presenter;
         initData();
-        getModel().setPlaylists(playlists);
     }
 
     private void initData() {
@@ -68,9 +68,14 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
         playlists.add(p6);
         playlists.add(p7);
         playlists.add(p8);
+
+        for (Playlist playlist: playlists) {
+            PlaylistComponent playlistComponent = new PlaylistComponent(playlist);
+            content.add(playlistComponent);
+        }
     }
 
     public interface Model extends TemplateModel {
-        void setPlaylists(List<Playlist> playlists);
+
     }
 }

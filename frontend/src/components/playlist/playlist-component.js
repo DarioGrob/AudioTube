@@ -131,7 +131,7 @@ class PlaylistComponent extends PolymerElement {
                         <small id="endTime"></small>
                     </div>
                 </div>
-                <vaadin-button>
+                <vaadin-button on-click="editPlaylist">
                     <iron-icon icon="vaadin:cog"></iron-icon>
                 </vaadin-button>
             </div>
@@ -144,13 +144,6 @@ class PlaylistComponent extends PolymerElement {
 
     ready() {
         super.ready();
-
-        let songList = this.get("playlist.songs");
-        this.set("playlist.currentSong", songList[0]);
-        this.set("currentSongIndex", 0);
-        this.set("songListLenght", songList.length);
-
-        this.setEndTimeForSong();
     }
 
     setEndTimeForSong() {
@@ -167,12 +160,9 @@ class PlaylistComponent extends PolymerElement {
     }
 
     initProgressBar() {
-        console.log("test");
         let playButton = this.shadowRoot.getElementById("playAndStop");
         if (playButton.getAttribute("icon") == "vaadin:pause") {
             let player = this.shadowRoot.getElementById("player");
-            console.log(player);
-            console.log(player.currentTime);
             let current_time = player.currentTime;
 
             let currentTime = this.calculateCurrentValue(current_time);
@@ -287,13 +277,28 @@ class PlaylistComponent extends PolymerElement {
         }
     }
 
+    _playlistChanged() {
+        let songList = this.get("playlist.songs");
+        this.set("playlist.currentSong", songList[0]);
+        this.set("currentSongIndex", 0);
+        this.set("songListLenght", songList.length);
+
+        this.setEndTimeForSong();
+
+        let player = this.shadowRoot.getElementById("player");
+        let button = this.shadowRoot.getElementById("playAndStop");
+        player.currentTime = 0;
+        button.setAttribute("icon", "vaadin:play-circle-o")
+    }
+
     static get properties() {
         return {
             playlist: {
                 type: Object,
                 value() {
 
-                }
+                },
+                observer: '_playlistChanged'
             }
         }
     }

@@ -70,19 +70,19 @@ class PlaylistView extends PolymerElement {
                     color: #001233;
                     background-color: white;
                 }
+
+                #grid-container::after, #grid-container::before {
+                    display: none;
+                !important;
+                }
             </style>
             
             <div id="content">
                 <h1>Playlists</h1>
+                <vaadin-dialog>test</vaadin-dialog>
                 <vaadin-text-field placeholder="search Playlistname ..." clear-button-visible id="playlistSearch"></vaadin-text-field>
                 <vaadin-button id="createPlaylist">+ Create Playlist</vaadin-button>
-                <vaadin-horizontal-layout id="grid-container">
-                    <dom-repeat items="{{playlists}}">
-                        <template>
-                            <playlist-component playlist="[[item]]"></playlist-component>
-                        </template>
-                    </dom-repeat>
-                </vaadin-horizontal-layout>
+                <vaadin-horizontal-layout id="grid-container"></vaadin-horizontal-layout>
                 <hr class="hr-text" data-content="Mehr anzeigen">
             </div>
         `;
@@ -90,12 +90,7 @@ class PlaylistView extends PolymerElement {
 
     static get properties() {
         return {
-            playlists: {
-                type: Array,
-                value() {
 
-                }
-            }
         }
     }
 
