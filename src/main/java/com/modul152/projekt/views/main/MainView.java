@@ -35,16 +35,10 @@ import com.vaadin.flow.theme.lumo.Lumo;
 @PWA(name = "AudioTube", shortName = "AudioTube", enableInstallPrompt = false)
 public class MainView extends AppLayout {
 
-    private final Tabs menu;
-    private H1 viewTitle;
     private String username;
 
     public MainView() {
-        VaadinSession.getCurrent().getSession().setAttribute("username", "Dario Grob");
-
-        setPrimarySection(Section.DRAWER);
-        menu = createMenu();
-        addToDrawer(createDrawerContent(menu));
+        setPrimarySection(Section.DRAWER);;
         addToNavbar(true, createHeaderContent());
     }
 
@@ -55,62 +49,9 @@ public class MainView extends AppLayout {
         layout.setWidthFull();
         layout.setSpacing(false);
         layout.setAlignItems(FlexComponent.Alignment.CENTER);
-        DrawerToggle drawerToggle = new DrawerToggle();
-        drawerToggle.setIcon(new Icon(VaadinIcon.MENU));
-        layout.add(drawerToggle);
-        layout.add(new H1("AudioTube"));
-        HorizontalLayout userBox = new HorizontalLayout();
-        userBox.setId("userBox");
-        userBox.add(new H2((String) VaadinSession.getCurrent().getSession().getAttribute("username")));
-        userBox.add(new Image("images/user.svg", "Avatar"));
-        layout.add(userBox);
+        H1 projectTitle = new H1("AudioTube");
+        projectTitle.getStyle().set("margin-left", "20px");
+        layout.add(projectTitle);
         return layout;
-    }
-
-    private Component createDrawerContent(Tabs menu) {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setId("menu");
-        layout.setSizeFull();
-        layout.setPadding(false);
-        layout.setSpacing(false);
-        layout.getThemeList().set("spacing-s", true);
-        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-        layout.add(menu);
-        return layout;
-    }
-
-    private Tabs createMenu() {
-        final Tabs tabs = new Tabs();
-        tabs.setOrientation(Tabs.Orientation.VERTICAL);
-        tabs.addThemeVariants(TabsVariant.LUMO_MINIMAL);
-        tabs.setId("tabs");
-        tabs.add(createMenuItems());
-        return tabs;
-    }
-
-    private Component[] createMenuItems() {
-        return new Tab[] {
-            createTab("Playlists", PlaylistView.class)
-        };
-    }
-
-    private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
-        final Tab tab = new Tab();
-        tab.add(new RouterLink(text, navigationTarget));
-        ComponentUtil.setData(tab, Class.class, navigationTarget);
-        return tab;
-    }
-
-    @Override
-    protected void afterNavigation() {
-        super.afterNavigation();
-        getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
-    }
-
-    private Optional<Tab> getTabForComponent(Component component) {
-        return menu.getChildren()
-                .filter(tab -> ComponentUtil.getData(tab, Class.class)
-                        .equals(component.getClass()))
-                .findFirst().map(Tab.class::cast);
     }
 }

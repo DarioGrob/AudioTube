@@ -13,7 +13,6 @@ class PlaylistView extends PolymerElement {
                 :host {
                     display: flex;
                     flex-direction: column;
-
                     width: 100%;
                     margin-left: auto;
                     margin-right: auto;
@@ -29,13 +28,31 @@ class PlaylistView extends PolymerElement {
 
                 #grid-container {
                     display: grid;
-                    grid-template-columns: auto auto auto auto;
+                    grid-template-columns: 250px 250px 250px 250px;
                     grid-column-gap: 30px;
                     grid-row-gap: 30px;
-                    margin-top: 50px;
+                    margin-top: 20px;
                     margin-left: auto;
                     margin-right: auto;
                     width: 1170px;
+                }
+
+                @media only screen and (max-width: 1200px) {
+                    #grid-container {
+                        grid-template-columns: 250px 250px 250px;
+                    }
+                }
+
+                @media only screen and (max-width: 930px) {
+                    #grid-container {
+                        grid-template-columns: 250px 250px;
+                    }
+                }
+
+                @media only screen and (max-width: 650px) {
+                    #grid-container {
+                        grid-template-columns: 250px;
+                    }
                 }
 
                 .hr-text {
@@ -75,13 +92,26 @@ class PlaylistView extends PolymerElement {
                     display: none;
                     !important;
                 }
+                
+                #createPlaylist {
+                    
+                }
+                
+                #downloadButton {
+                    
+                }
+                
+                #playlistSearch {
+                    margin-top: 30px;
+                }
             </style>
             
             <div id="content">
                 <h1>Playlists</h1>
-                <vaadin-dialog>test</vaadin-dialog>
-                <vaadin-text-field placeholder="search Playlistname ..." clear-button-visible id="playlistSearch"></vaadin-text-field>
                 <vaadin-button id="createPlaylist">+ Create Playlist</vaadin-button>
+                <vaadin-button id="downloadButton">Download Song</vaadin-button>
+                <br>
+                <vaadin-text-field placeholder="search Playlistname ..." clear-button-visible id="playlistSearch"></vaadin-text-field>
                 <vaadin-horizontal-layout id="grid-container"></vaadin-horizontal-layout>
                 <hr class="hr-text" data-content="Mehr anzeigen">
             </div>
