@@ -15,8 +15,11 @@ import java.nio.file.Paths;
 public class VideoToAudioConverter {
 
     public int convert(String youtubeId) {
+        String programmFolder = System.getenv("AudioTube_KonProgramm");
+        String projectFolder = System.getenv("AudioTube_Projekt");
+
         String videoFileName = "";
-        Path dir = Paths.get("C:\\Users\\Dario Grob\\Desktop\\Schule\\Module\\152\\Projekt\\audiotube\\youtubeVideo");
+        Path dir = Paths.get(projectFolder + "\\youtubeVideo");
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir, "*" + youtubeId + "*")) {
             for (Path entry: stream) {
                 videoFileName = entry.getFileName().toString();
@@ -26,19 +29,19 @@ public class VideoToAudioConverter {
         }
 
         try {
-            String videoFile = "C:\\Users\\Dario Grob\\Desktop\\Schule\\Module\\152\\Projekt\\audiotube\\youtubeVideo\\" + videoFileName;
+            String videoFile = projectFolder + "\\youtubeVideo\\" + videoFileName;
             String[] splitVideoFileName = videoFileName.split("\\.");
-            String newAudioFile = "C:\\Users\\Dario Grob\\Desktop\\Schule\\Module\\152\\Projekt\\audiotube\\youtubeAudio\\" + splitVideoFileName[0] + ".mp3";
+            String newAudioFile = projectFolder + "\\youtubeAudio\\" + splitVideoFileName[0] + ".mp3";
 
             Runtime runtime = Runtime.getRuntime();
             String[] command = new String[]{
-                    "C:\\Users\\Dario Grob\\Desktop\\test\\ffmpeg.exe",
+                    programmFolder + "\\ffmpeg.exe",
                     "-i",
                     videoFile,
                     newAudioFile,
             };
             String line;
-            Process process = runtime.exec(command, new String[]{}, new File("C:\\Users\\Dario Grob\\Desktop\\Schule\\Module\\152\\Projekt\\audiotube\\youtubeAudio"));
+            Process process = runtime.exec(command, new String[]{}, new File(projectFolder + "\\youtubeAudio"));
             BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
             while ((line = input.readLine()) != null) {
                 System.out.println(line);

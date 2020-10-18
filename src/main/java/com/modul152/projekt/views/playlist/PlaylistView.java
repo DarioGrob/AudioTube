@@ -1,6 +1,7 @@
 package com.modul152.projekt.views.playlist;
 
 import com.modul152.projekt.components.playlist.CreateDialog;
+import com.modul152.projekt.components.playlist.DownloadDialog;
 import com.modul152.projekt.components.playlist.PlaylistComponent;
 import com.modul152.projekt.model.Playlist;
 import com.modul152.projekt.model.Song;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Tag("playlist-view")
 @JsModule("./src/views/playlist/playlist-view.js")
@@ -36,6 +38,9 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
     @Id("createPlaylist")
     private Button button;
 
+    @Id("downloadButton")
+    private Button downloadButton;
+
     private PlaylistPresenter presenter;
 
     @Autowired
@@ -45,6 +50,10 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
 
         button.addClickListener(event -> {
             CreateDialog createDialog = new CreateDialog(presenter);
+        });
+
+        downloadButton.addClickListener(event -> {
+            DownloadDialog downloadDialog = new DownloadDialog(presenter);
         });
     }
 

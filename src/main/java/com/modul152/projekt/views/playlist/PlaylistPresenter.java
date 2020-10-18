@@ -16,4 +16,19 @@ public class PlaylistPresenter {
         this.downloadYoutube = downloadYoutube;
         this.converter = converter;
     }
+
+    public boolean downloadSong(String url) {
+        int exitCode = 0;
+        exitCode = downloadYoutube.download(url);
+
+        if (exitCode == 0) {
+            String[] splitUrl = url.split("v=");
+            String videoId = splitUrl[splitUrl.length -1];
+            exitCode = converter.convert(videoId);
+            if (exitCode == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
