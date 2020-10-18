@@ -1,5 +1,6 @@
 package com.modul152.projekt.views.playlist;
 
+import com.modul152.projekt.components.playlist.CreateDialog;
 import com.modul152.projekt.components.playlist.PlaylistComponent;
 import com.modul152.projekt.model.Playlist;
 import com.modul152.projekt.model.Song;
@@ -41,6 +42,10 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
     public PlaylistView(PlaylistPresenter presenter) {
         this.presenter = presenter;
         initData();
+
+        button.addClickListener(event -> {
+            CreateDialog createDialog = new CreateDialog(presenter);
+        });
     }
 
     private void initData() {
