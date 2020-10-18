@@ -5,17 +5,15 @@
 }
 
 .deleteButton {
-    margin-top: 30px;
+    margin-top: 10px;
     width: 100%;
     background-color: #e5383b;
     color: #ffffff;
 }
 
-.testilo {
-    background-color: #f5f3f4;
-    border: 4px solid black;
-}
-
-div#content {
-    padding: 0;
+.addButton {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #73a942;
+    color: #ffffff;
 }

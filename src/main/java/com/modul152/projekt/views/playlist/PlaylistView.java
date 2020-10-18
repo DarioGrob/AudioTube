@@ -70,7 +70,7 @@ public class PlaylistView extends PolymerTemplate<PlaylistView.Model> {
         playlists.add(p8);
 
         for (Playlist playlist: playlists) {
-            PlaylistComponent playlistComponent = new PlaylistComponent(playlist);
+            PlaylistComponent playlistComponent = new PlaylistComponent(playlist, presenter);
             content.add(playlistComponent);
         }
     }

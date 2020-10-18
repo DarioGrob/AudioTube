@@ -73,7 +73,7 @@ class PlaylistView extends PolymerElement {
 
                 #grid-container::after, #grid-container::before {
                     display: none;
-                !important;
+                    !important;
                 }
             </style>
             
